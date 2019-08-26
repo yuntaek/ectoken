@@ -1,5 +1,5 @@
 const crypto = require('crypto')
-const {LengthOfIV,Algorithm} = require('./const.js')
+const {LengthOfIV,Algorithm} = require('./constants.js')
 const {getHashedKey} = require('./common.js')
 module.exports = class Encryptor{
     constructor(message,key){
@@ -20,14 +20,12 @@ module.exports = class Encryptor{
         const cipher = crypto.createCipheriv(Algorithm, getHashedKey(this.key), this.getIv())
         this.encrypted = cipher.update(this.message,'utf8','hex')
         this.encrypted += cipher.final('hex')
-        console.log('generated encrypted : ',this.encrypted)
         this.tag = cipher.getAuthTag().toString('hex')
-        console.log('generated tag : ', this.tag)
+        return this.getToken()
     }
 
     _genIv(){
         this.iv = crypto.randomBytes(LengthOfIV)
-        console.log('generated iv : ',this.iv.toString('hex'))
         return this.iv
     }
 
@@ -35,7 +33,6 @@ module.exports = class Encryptor{
         if(!this.iv){
             return this._genIv()
         }
-        console.log('get iv : ',this.iv.toString('hex'))
         return this.iv
     }
     
@@ -46,9 +43,7 @@ module.exports = class Encryptor{
     _genToken(){
         let rawToken = this.iv.toString('hex')+this.encrypted+this.tag
         rawToken = Buffer.from(rawToken,'hex')
-        console.log('rawToken : ', rawToken.toString('base64'))
         this.token = rawToken.toString('base64').replace(/=/g,'')
-        console.log('generated token : ',this.token)
         return this.token
     }
 
@@ -56,7 +51,6 @@ module.exports = class Encryptor{
         if(!this.token){
             return this._genToken()
         }
-        console.log('get token : ',this.token)
         return this.token
     }
 }

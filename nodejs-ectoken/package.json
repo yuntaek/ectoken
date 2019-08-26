@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-ectoken",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/./bin/mocha ./test/index.spec.js"
+  },
+  "keywords": [
+    "edgecast",
+    "token",
+    "verizon"
+  ],
+  "author": "Yuntaek Lim",
+  "license": "ISC",
+  "dependencies": {
+    "random-number-csprng": "^1.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}
